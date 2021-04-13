@@ -3,7 +3,8 @@ from ikomia.dnn import datasetio, dataset
 import copy
 # Your imports below
 import os
-
+import numpy as np
+import cv2
 # --------------------
 # - Class to handle the process parameters
 # - Inherits core.CProtocolTaskParam from Ikomia API
@@ -65,7 +66,13 @@ class WGISD_DatasetProcess(core.CProtocolTask):
             mask_file = filename + ".npz"
 
             if os.path.isfile(mask_file):
-                image["instance_seg_masks_file"] = mask_file
+                mask_file_png = filename + "mask" + ".png"
+                if not os.path.isfile(mask_file_png):
+                    d = np.load(mask_file)
+                    mask = d["arr_0"]
+                    mask = np.max(mask, axis=-1)
+                    cv2.imwrite(mask_file_png, mask)
+                image["instance_seg_masks_file"] = mask_file_png
                 images_with_mask.append(image)
 
         data["images"] = images_with_mask
