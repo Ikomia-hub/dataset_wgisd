@@ -44,7 +44,7 @@ class WGISD_DatasetProcess(core.CProtocolTask):
     def __init__(self, name, param):
         core.CProtocolTask.__init__(self, name)
         # Add input/output of the process here
-        self.addOutput(datasetio.IkDatasetIO(dataprocess.DatasetFormat.YOLO))
+        self.addOutput(datasetio.IkDatasetIO("yolo"))
         self.addOutput(dataprocess.CDblFeatureIO())
 
         # Create parameters class
@@ -131,6 +131,7 @@ class WGISD_DatasetProcessFactory(dataprocess.CProcessFactory):
         self.info.authors = "Ikomia team"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Dataset"
+        self.info.version = "1.0.0"
         # self.info.iconPath = "your path to a specific icon"
         self.info.keywords = "dataset,annotation,train,dnn"
 
