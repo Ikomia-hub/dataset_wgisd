@@ -16,23 +16,23 @@ class WGISD_DatasetParam(core.CProtocolTaskParam):
         # Place default value initialization here
         self.data_folder_path = ""
         self.class_file_path = ""
-        self.load_mask = True
+        self.seg_mask_mode = "None"
 
-    def setParamMap(self, paramMap):
+    def setParamMap(self, param_map):
         # Set parameters values from Ikomia application
         # Parameters values are stored as string and accessible like a python dict
-        self.data_folder_path = paramMap["data_folder_path"]
-        self.class_file_path = paramMap["class_file_path"]
-        self.load_mask = bool(paramMap["load_mask"])
+        self.data_folder_path = param_map["data_folder_path"]
+        self.class_file_path = param_map["class_file_path"]
+        self.seg_mask_mode = param_map["seg_mask_mode"]
 
     def getParamMap(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
-        paramMap = core.ParamMap()
-        paramMap["data_folder_path"] = self.data_folder_path
-        paramMap["class_file_path"] = self.class_file_path
-        paramMap["load_mask"] = str(self.load_mask)
-        return paramMap
+        param_map = core.ParamMap()
+        param_map["data_folder_path"] = self.data_folder_path
+        param_map["class_file_path"] = self.class_file_path
+        param_map["seg_mask_mode"] = self.seg_mask_mode
+        return param_map
 
 
 # --------------------
@@ -60,19 +60,25 @@ class WGISD_DatasetProcess(core.CProtocolTask):
 
     def load_masks(self, data):
         images_with_mask = []
+        param = self.getParam()
 
         for image in data["images"]:
             filename, extension = os.path.splitext(image["filename"])
             mask_file = filename + ".npz"
 
             if os.path.isfile(mask_file):
-                mask_file_png = filename + "mask" + ".png"
-                if not os.path.isfile(mask_file_png):
-                    d = np.load(mask_file)
-                    mask = d["arr_0"]
-                    mask = np.max(mask, axis=-1)
-                    cv2.imwrite(mask_file_png, mask)
-                image["instance_seg_masks_file"] = mask_file_png
+                if param.seg_mask_mode == "Instance":
+                    image["instance_seg_masks_file"] = mask_file
+                else:
+                    mask_file_png = filename + "mask" + ".png"
+                    if not os.path.isfile(mask_file_png):
+                        d = np.load(mask_file)
+                        mask = d["arr_0"]
+                        mask = np.max(mask, axis=-1)
+                        cv2.imwrite(mask_file_png, mask)
+
+                    image["semantic_seg_masks_file"] = mask_file_png
+
                 images_with_mask.append(image)
 
         data["images"] = images_with_mask
@@ -92,7 +98,7 @@ class WGISD_DatasetProcess(core.CProtocolTask):
         # Step progress bar:
         self.emitStepProgress()
 
-        if param.load_mask:
+        if param.seg_mask_mode != "None":
             self.load_masks(output.data)
 
         # Step progress bar:

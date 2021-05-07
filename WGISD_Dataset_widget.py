@@ -29,8 +29,11 @@ class WGISD_DatasetWidget(core.CProtocolTaskWidget):
                                                          path=self.parameters.class_file_path,
                                                          mode=QFileDialog.ExistingFile)
 
-        self.check_mask = utils.append_check(grid_layout=self.grid_layout, label="Load segmentation masks",
-                                            checked=self.parameters.load_mask)
+        self.combo_seg_mask_mode = utils.append_combo(grid_layout=self.grid_layout, label="Segmentation masks")
+        self.combo_seg_mask_mode.addItem("None")
+        self.combo_seg_mask_mode.addItem("Instance")
+        self.combo_seg_mask_mode.addItem("Panoptic")
+        self.combo_seg_mask_mode.setCurrentText(self.parameters.seg_mask_mode)
 
         # PyQt -> Qt wrapping
         layout_ptr = utils.PyQtToQt(self.grid_layout)
@@ -43,7 +46,7 @@ class WGISD_DatasetWidget(core.CProtocolTaskWidget):
         # Get parameters from widget
         self.parameters.data_folder_path = self.browse_folder.path
         self.parameters.class_file_path = self.browse_class_file.path
-        self.parameters.load_mask = self.check_mask.isChecked()
+        self.parameters.seg_mask_mode = self.combo_seg_mask_mode.currentText()
 
         # Send signal to launch the process
         self.emitApply(self.parameters)
