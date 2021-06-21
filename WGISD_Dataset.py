@@ -1,6 +1,4 @@
 from ikomia import dataprocess
-import WGISD_Dataset_process as processMod
-import WGISD_Dataset_widget as widgetMod
 
 
 # --------------------
@@ -14,8 +12,10 @@ class WGISD_Dataset(dataprocess.CPluginProcessInterface):
 
     def getProcessFactory(self):
         # Instantiate process object
-        return processMod.WGISD_DatasetProcessFactory()
+        from WGISD_Dataset.WGISD_Dataset_process import WGISD_DatasetProcessFactory
+        return WGISD_DatasetProcessFactory()
 
     def getWidgetFactory(self):
         # Instantiate associated widget object
-        return widgetMod.WGISD_DatasetWidgetFactory()
+        from WGISD_Dataset.WGISD_Dataset_widget import WGISD_DatasetWidgetFactory
+        return WGISD_DatasetWidgetFactory()

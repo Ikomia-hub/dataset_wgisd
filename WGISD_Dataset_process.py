@@ -9,10 +9,10 @@ import cv2
 # - Class to handle the process parameters
 # - Inherits core.CProtocolTaskParam from Ikomia API
 # --------------------
-class WGISD_DatasetParam(core.CProtocolTaskParam):
+class WGISD_DatasetParam(core.CWorkflowTaskParam):
 
     def __init__(self):
-        core.CProtocolTaskParam.__init__(self)
+        core.CWorkflowTaskParam.__init__(self)
         # Place default value initialization here
         self.data_folder_path = ""
         self.class_file_path = ""
@@ -39,10 +39,10 @@ class WGISD_DatasetParam(core.CProtocolTaskParam):
 # - Class which implements the process
 # - Inherits core.CProtocolTask or derived from Ikomia API
 # --------------------
-class WGISD_DatasetProcess(core.CProtocolTask):
+class WGISD_DatasetProcess(core.CWorkflowTask):
 
     def __init__(self, name, param):
-        core.CProtocolTask.__init__(self, name)
+        core.CWorkflowTask.__init__(self, name)
         # Add input/output of the process here
         self.addOutput(datasetio.IkDatasetIO("yolo"))
         self.addOutput(dataprocess.CDblFeatureIO())
@@ -120,10 +120,10 @@ class WGISD_DatasetProcess(core.CProtocolTask):
 # - Factory class to build process object
 # - Inherits dataprocess.CProcessFactory from Ikomia API
 # --------------------
-class WGISD_DatasetProcessFactory(dataprocess.CProcessFactory):
+class WGISD_DatasetProcessFactory(dataprocess.CTaskFactory):
 
     def __init__(self):
-        dataprocess.CProcessFactory.__init__(self)
+        dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
         self.info.name = "WGISD_Dataset"
         self.info.shortDescription = "Load WGSID dataset"

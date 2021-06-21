@@ -1,5 +1,6 @@
 from ikomia import utils, core, dataprocess
-import WGISD_Dataset_process as processMod
+from ikomia.utils import pyqtutils, qtconversion
+from WGISD_Dataset.WGISD_Dataset_process import WGISD_DatasetParam
 # PyQt GUI framework
 from PyQt5.QtWidgets import *
 
@@ -8,32 +9,32 @@ from PyQt5.QtWidgets import *
 # - Class which implements widget associated with the process
 # - Inherits core.CProtocolTaskWidget from Ikomia API
 # --------------------
-class WGISD_DatasetWidget(core.CProtocolTaskWidget):
+class WGISD_DatasetWidget(core.CWorkflowTaskWidget):
 
     def __init__(self, param, parent):
-        core.CProtocolTaskWidget.__init__(self, parent)
+        core.CWorkflowTaskWidget.__init__(self, parent)
 
         if param is None:
-            self.parameters = processMod.WGISD_DatasetParam()
+            self.parameters = WGISD_DatasetParam()
         else:
             self.parameters = param
 
         # Create layout : QGridLayout by default
         self.grid_layout = QGridLayout()
 
-        self.browse_folder = utils.append_browse_file(grid_layout=self.grid_layout, label="Dataset folder",
+        self.browse_folder = pyqtutils.append_browse_file(grid_layout=self.grid_layout, label="Dataset folder",
                                                      path=self.parameters.data_folder_path,
                                                      mode=QFileDialog.Directory)
 
-        self.browse_class_file = utils.append_browse_file(grid_layout=self.grid_layout, label="Classes file",
+        self.browse_class_file = pyqtutils.append_browse_file(grid_layout=self.grid_layout, label="Classes file",
                                                          path=self.parameters.class_file_path,
                                                          mode=QFileDialog.ExistingFile)
 
-        self.check_mask = utils.append_check(grid_layout=self.grid_layout, label="Load segmentation masks",
+        self.check_mask = pyqtutils.append_check(grid_layout=self.grid_layout, label="Load segmentation masks",
                                             checked=self.parameters.load_mask)
 
         # PyQt -> Qt wrapping
-        layout_ptr = utils.PyQtToQt(self.grid_layout)
+        layout_ptr = qtconversion.PyQtToQt(self.grid_layout)
 
         # Set widget layout
         self.setLayout(layout_ptr)
