@@ -1,9 +1,9 @@
+import os
+import copy
+import numpy as np
+from distutils.util import strtobool
 from ikomia import core, dataprocess
 from ikomia.dnn import datasetio, dataset
-import copy
-# Your imports below
-import os
-import numpy as np
 import cv2
 # --------------------
 # - Class to handle the process parameters
@@ -23,16 +23,16 @@ class WGISD_DatasetParam(core.CWorkflowTaskParam):
         # Parameters values are stored as string and accessible like a python dict
         self.data_folder_path = paramMap["data_folder_path"]
         self.class_file_path = paramMap["class_file_path"]
-        self.load_mask = bool(paramMap["load_mask"])
+        self.load_mask = strtobool(paramMap["load_mask"])
 
     def getParamMap(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
-        paramMap = core.ParamMap()
-        paramMap["data_folder_path"] = self.data_folder_path
-        paramMap["class_file_path"] = self.class_file_path
-        paramMap["load_mask"] = str(self.load_mask)
-        return paramMap
+        param_map = core.ParamMap()
+        param_map["data_folder_path"] = self.data_folder_path
+        param_map["class_file_path"] = self.class_file_path
+        param_map["load_mask"] = str(self.load_mask)
+        return param_map
 
 
 # --------------------
@@ -45,7 +45,7 @@ class WGISD_DatasetProcess(core.CWorkflowTask):
         core.CWorkflowTask.__init__(self, name)
         # Add input/output of the process here
         self.addOutput(datasetio.IkDatasetIO("yolo"))
-        self.addOutput(dataprocess.CDblFeatureIO())
+        self.addOutput(dataprocess.CNumericIO())
 
         # Create parameters class
         if param is None:
@@ -59,6 +59,7 @@ class WGISD_DatasetProcess(core.CWorkflowTask):
         return 3
 
     def load_masks(self, data):
+        print("Generating masks for semantic segmentation. This may take a while, please wait...")
         images_with_mask = []
 
         for image in data["images"]:
