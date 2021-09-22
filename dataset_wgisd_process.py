@@ -8,7 +8,7 @@ import cv2
 # - Class to handle the process parameters
 # - Inherits core.CProtocolTaskParam from Ikomia API
 # --------------------
-class WGISD_DatasetParam(core.CWorkflowTaskParam):
+class DatasetWgisdParam(core.CWorkflowTaskParam):
 
     def __init__(self):
         core.CWorkflowTaskParam.__init__(self)
@@ -38,7 +38,7 @@ class WGISD_DatasetParam(core.CWorkflowTaskParam):
 # - Class which implements the process
 # - Inherits core.CProtocolTask or derived from Ikomia API
 # --------------------
-class WGISD_DatasetProcess(core.CWorkflowTask):
+class DatasetWgisd(core.CWorkflowTask):
 
     def __init__(self, name, param):
         core.CWorkflowTask.__init__(self, name)
@@ -48,7 +48,7 @@ class WGISD_DatasetProcess(core.CWorkflowTask):
 
         # Create parameters class
         if param is None:
-            self.setParam(WGISD_DatasetParam())
+            self.setParam(DatasetWgisdParam())
         else:
             self.setParam(copy.deepcopy(param))
 
@@ -126,12 +126,12 @@ class WGISD_DatasetProcess(core.CWorkflowTask):
 # - Factory class to build process object
 # - Inherits dataprocess.CProcessFactory from Ikomia API
 # --------------------
-class WGISD_DatasetProcessFactory(dataprocess.CTaskFactory):
+class DatasetWgisdFactory(dataprocess.CTaskFactory):
 
     def __init__(self):
         dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
-        self.info.name = "WGISD_Dataset"
+        self.info.name = "dataset_wgisd"
         self.info.shortDescription = "Load Wine Grape Instance Segmentation Dataset (WGISD)"
         self.info.description = "Load Wine Grape Instance Segmentation Dataset (WGISD). " \
                                 "This dataset was created to provide images and annotations " \
@@ -156,4 +156,4 @@ class WGISD_DatasetProcessFactory(dataprocess.CTaskFactory):
 
     def create(self, param=None):
         # Create process object
-        return WGISD_DatasetProcess(self.info.name, param)
+        return DatasetWgisd(self.info.name, param)
