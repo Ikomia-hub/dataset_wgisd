@@ -1,4 +1,4 @@
-from ikomia import utils, core, dataprocess
+from ikomia import core, dataprocess
 from ikomia.utils import pyqtutils, qtconversion
 from dataset_wgisd.dataset_wgisd_process import DatasetWgisdParam
 # PyQt GUI framework
@@ -40,9 +40,9 @@ class DatasetWgisdWidget(core.CWorkflowTaskWidget):
         layout_ptr = qtconversion.PyQtToQt(self.grid_layout)
 
         # Set widget layout
-        self.setLayout(layout_ptr)
+        self.set_layout(layout_ptr)
 
-    def onApply(self):
+    def on_apply(self):
         # Apply button clicked slot
         # Get parameters from widget
         self.parameters.data_folder_path = self.browse_folder.path
@@ -50,7 +50,7 @@ class DatasetWgisdWidget(core.CWorkflowTaskWidget):
         self.parameters.seg_mask_mode = self.combo_seg_mask_mode.currentText()
 
         # Send signal to launch the process
-        self.emitApply(self.parameters)
+        self.emit_apply(self.parameters)
 
 
 # --------------------
