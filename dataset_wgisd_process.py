@@ -15,23 +15,23 @@ class DatasetWgisdParam(core.CWorkflowTaskParam):
     def __init__(self):
         core.CWorkflowTaskParam.__init__(self)
         # Place default value initialization here
-        self.data_folder_path = ""
-        self.class_file_path = ""
+        self.dataset_folder = ""
+        self.classes_path = ""
         self.seg_mask_mode = "None"
 
     def set_values(self, params):
         # Set parameters values from Ikomia application
         # Parameters values are stored as string and accessible like a python dict
-        self.data_folder_path = params["data_folder_path"]
-        self.class_file_path = params["class_file_path"]
+        self.dataset_folder = params["dataset_folder"]
+        self.classes_path = params["classes_path"]
         self.seg_mask_mode = params["seg_mask_mode"]
 
     def get_values(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
         params = {
-            "data_folder_path": self.data_folder_path,
-            "class_file_path": self.class_file_path,
+            "dataset_folder": self.dataset_folder,
+            "classes_path": self.classes_path,
             "seg_mask_mode": self.seg_mask_mode,
         }
         return params
@@ -96,7 +96,7 @@ class DatasetWgisd(core.CWorkflowTask):
 
         # Get dataset output :
         output = self.get_output(0)
-        output.data = dataset.load_yolo_dataset(param.data_folder_path, param.class_file_path)
+        output.data = dataset.load_yolo_dataset(param.dataset_folder, param.classes_path)
         output.has_bckgnd_class = False
         # Step progress bar:
         self.emit_step_progress()
