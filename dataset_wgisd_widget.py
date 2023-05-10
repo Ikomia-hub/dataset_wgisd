@@ -27,7 +27,7 @@ class DatasetWgisdWidget(core.CWorkflowTaskWidget):
                                                      mode=QFileDialog.Directory)
 
         self.browse_class_file = pyqtutils.append_browse_file(grid_layout=self.grid_layout, label="Classes file",
-                                                         path=self.parameters.classes_path,
+                                                         path=self.parameters.class_file,
                                                          mode=QFileDialog.ExistingFile)
 
         self.combo_seg_mask_mode = pyqtutils.append_combo(grid_layout=self.grid_layout, label="Segmentation masks")
@@ -46,7 +46,7 @@ class DatasetWgisdWidget(core.CWorkflowTaskWidget):
         # Apply button clicked slot
         # Get parameters from widget
         self.parameters.dataset_folder = self.browse_folder.path
-        self.parameters.classes_path = self.browse_class_file.path
+        self.parameters.class_file = self.browse_class_file.path
         self.parameters.seg_mask_mode = self.combo_seg_mask_mode.currentText()
 
         # Send signal to launch the process
