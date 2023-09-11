@@ -19,10 +19,13 @@
     </a> 
 </p>
 
-Load Wine Grape Instance Segmentation Dataset (WGISD). This dataset was created to provide images and annotations to study object detection, instance or semantic segmentation for image-based monitoring and field robotics in viticulture. It provides instances from five different grape varieties taken on field. These instances shows variance in grape pose, illumination and focus, including genetic and phenological variations such as shape, color and compactness.
+Load Wine Grape Instance Segmentation Dataset (WGISD) into Ikomia dataset format. Then, any compatible training algorithms from the Ikomia HUB can be connected to this converter.
 
-[Insert illustrative image here. Image must be accessible publicly, in algorithm Github repository for example.
-<img src="images/illustration.png"  alt="Illustrative image" width="30%" height="30%">]
+In Ikomia Studio, once dataset is loaded, all images can be visualized with their respective annotations.
+
+This dataset was created to provide images and annotations to study object detection, instance or semantic segmentation for image-based monitoring and field robotics in viticulture. It provides instances from five different grape varieties taken on field. These instances shows variance in grape pose, illumination and focus, including genetic and phenological variations such as shape, color and compactness.
+
+![Image example](https://raw.githubusercontent.com/Ikomia-hub/dataset_wgisd/feat/new_readme/icons/example.jpg)
 
 ## :rocket: Use with Ikomia API
 
@@ -36,20 +39,27 @@ pip install ikomia
 
 #### 2. Create your workflow
 
-[Change the sample image URL to fit algorithm purpose]
-
 ```python
-import ikomia
 from ikomia.dataprocess.workflow import Workflow
 
 # Init your workflow
 wf = Workflow()
 
-# Add algorithm
-algo = wf.add_task(name="dataset_wgisd", auto_connect=True)
+# Add dataset loader:auto_connect is set to False because dataset algorithms don't have any input
+dataset_loader = wf.add_task(name="dataset_wgisd", auto_connect=False)
 
-# Run on your image  
-wf.run_on(url="example_image.png")
+dataset_loader.set_parameters({
+    "dataset_folder": "wgisd/data/",
+    "class_file": "wgisd/classes.txt",
+    "seg_mask_mode": "None",
+})
+
+# Add object detection training algorithm (pick one from Ikomia HUB)
+train_algo = wf.add_task(name="train_yolo_v7", auto_connect=True)
+
+# Run the training workflow
+wf.run()
+
 ```
 
 ## :sunny: Use with Ikomia Studio
@@ -62,56 +72,18 @@ Ikomia Studio offers a friendly UI with the same features as the API.
 
 ## :pencil: Set algorithm parameters
 
-[Explain each algorithm parameters]
-
-[Change the sample image URL to fit algorithm purpose]
-
 ```python
-import ikomia
-from ikomia.dataprocess.workflow import Workflow
-
-# Init your workflow
-wf = Workflow()
-
-# Add algorithm
-algo = wf.add_task(name="dataset_wgisd", auto_connect=True)
-
-algo.set_parameters({
-    "param1": "value1",
-    "param2": "value2",
-    ...
+dataset_loader.set_parameters({
+    "dataset_folder": "wgisd/data/",
+    "class_file": "wgisd/classes.txt",
+    "seg_mask_mode": "None",
 })
-
-# Run on your image  
-wf.run_on(url="example_image.png")
-
 ```
+- **dataset_folder** (str): path to the folder containing dataset images.
+- **class_file** (str): path to the file where classes are listed.
+- **seg_mask_mode** (str): type of training task
+    - object detection: *"seg_mask_mod": "None"*
+    - instance segmentation: *"seg_mask_mod": "Instance"*
+    - semantic segmentation: any other value
 
-## :mag: Explore algorithm outputs
-
-Every algorithm produces specific outputs, yet they can be explored them the same way using the Ikomia API. For a more in-depth understanding of managing algorithm outputs, please refer to the [documentation](https://ikomia-dev.github.io/python-api-documentation/advanced_guide/IO_management.html).
-
-```python
-import ikomia
-from ikomia.dataprocess.workflow import Workflow
-
-# Init your workflow
-wf = Workflow()
-
-# Add algorithm
-algo = wf.add_task(name="dataset_wgisd", auto_connect=True)
-
-# Run on your image  
-wf.run_on(url="example_image.png")
-
-# Iterate over outputs
-for output in algo.get_outputs()
-    # Print information
-    print(output)
-    # Export it to JSON
-    output.to_json()
-```
-
-## :fast_forward: Advanced usage 
-
-[optional]
+***Note***: parameter key and value should be in **string format** when added to the dictionary.
