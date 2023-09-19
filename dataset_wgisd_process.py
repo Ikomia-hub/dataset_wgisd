@@ -136,13 +136,6 @@ class DatasetWgisdFactory(dataprocess.CTaskFactory):
         # Set process information as string here
         self.info.name = "dataset_wgisd"
         self.info.short_description = "Load Wine Grape Instance Segmentation Dataset (WGISD)"
-        self.info.description = "Load Wine Grape Instance Segmentation Dataset (WGISD). " \
-                                "This dataset was created to provide images and annotations " \
-                                "to study object detection, instance or semantic segmentation " \
-                                "for image-based monitoring and field robotics in viticulture. " \
-                                "It provides instances from five different grape varieties taken on field. " \
-                                "These instances shows variance in grape pose, illumination and focus, " \
-                                "including genetic and phenological variations such as shape, color and compactness."
         self.info.authors = "Thiago T. Santos, Leonardo L. de Souza, Andreza A. dos Santos, Sandra Avila"
         self.info.article = "Grape detection, segmentation, and tracking using deep neural networks " \
                             "and three-dimensional association"
