@@ -141,9 +141,10 @@ class DatasetWgisdFactory(dataprocess.CTaskFactory):
                             "and three-dimensional association"
         self.info.year = 2020
         self.info.license = "CC BY-NC 4.0"
-        self.info.documentation_link = "https://github.com/thsant/wgisd"
+        self.info.documentation_link = ""
         # Code source repository
-        self.info.repository = "https://github.com/Ikomia-dev/WGISD_Dataset"
+        self.info.repository = "https://github.com/Ikomia-hub/dataset_wgisd"
+        self.info.original_repository = "https://github.com/thsant/wgisd"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Dataset"
         self.info.version = "1.0.0"
