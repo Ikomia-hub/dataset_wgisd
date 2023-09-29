@@ -150,6 +150,8 @@ class DatasetWgisdFactory(dataprocess.CTaskFactory):
         self.info.version = "1.0.0"
         self.info.icon_path = "icons/wgisd.png"
         self.info.keywords = "dataset,annotation,train,dnn"
+        self.info.algo_type = core.AlgoType.DATASET
+        self.info.algo_tasks = "OBJECT_DETECTION,INSTANCE_SEGMENTATION,SEMANTIC_SEGMENTATION"
 
     def create(self, param=None):
         # Create process object
