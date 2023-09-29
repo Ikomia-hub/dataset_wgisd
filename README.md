@@ -25,7 +25,7 @@ In Ikomia Studio, once dataset is loaded, all images can be visualized with thei
 
 This dataset was created to provide images and annotations to study object detection, instance or semantic segmentation for image-based monitoring and field robotics in viticulture. It provides instances from five different grape varieties taken on field. These instances shows variance in grape pose, illumination and focus, including genetic and phenological variations such as shape, color and compactness.
 
-![Image example](https://raw.githubusercontent.com/Ikomia-hub/dataset_wgisd/feat/new_readme/icons/example.jpg)
+![Image example](https://raw.githubusercontent.com/Ikomia-hub/dataset_wgisd/main/icons/example.jpg)
 
 ## :rocket: Use with Ikomia API
 
